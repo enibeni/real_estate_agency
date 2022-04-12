@@ -21,4 +21,30 @@ class Migration(migrations.Migration):
                 ('flats', models.ManyToManyField(related_name='flat_owners', to='property.Flat', verbose_name='Квартиры в собственности')),
             ],
         ),
+        migrations.RemoveField(
+            model_name='owner',
+            name='flats',
+        ),
+        migrations.AddField(
+            model_name='owner',
+            name='flat',
+            field=models.ManyToManyField(db_index=True, related_name='flat_owners', to='property.Flat',
+                                         verbose_name='Квартиры в собственности'),
+        ),
+        migrations.AlterField(
+            model_name='owner',
+            name='name',
+            field=models.CharField(db_index=True, max_length=200, verbose_name='ФИО владельца'),
+        ),
+        migrations.AlterField(
+            model_name='owner',
+            name='owner_pure_phone',
+            field=phonenumber_field.modelfields.PhoneNumberField(blank=True, db_index=True, max_length=128, region=None,
+                                                                 verbose_name='Нормализованный номер владельца'),
+        ),
+        migrations.AlterField(
+            model_name='owner',
+            name='owners_phonenumber',
+            field=models.CharField(db_index=True, max_length=20, verbose_name='Номер владельца'),
+        ),
     ]
