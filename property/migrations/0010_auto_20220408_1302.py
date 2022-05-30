@@ -7,14 +7,15 @@ def move_owners_info(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
     Owner = apps.get_model('property', 'Owner')
     flat_set = Flat.objects.all()
-    if flat_set.exists():
-        for flat in flat_set.iterator():
-            Owner.objects.get_or_create(
-                name=flat.owner, defaults={
-                    'owners_phonenumber': flat.owners_phonenumber,
-                    'owner_pure_phone': flat.owner_pure_phone
-                }
-            )
+    if not flat_set.exists():
+        return None
+    for flat in flat_set.iterator():
+        Owner.objects.get_or_create(
+            name=flat.owner, defaults={
+                'owners_phonenumber': flat.owners_phonenumber,
+                'owner_pure_phone': flat.owner_pure_phone
+            }
+        )
 
 
 def move_backward(apps, schema_editor):

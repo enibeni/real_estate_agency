@@ -7,13 +7,14 @@ import phonenumbers
 def pure_owners_phonenumber(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
     flat_set = Flat.objects.all()
-    if flat_set.exists():
-        for flat in flat_set.iterator():
-            parsed_phone = phonenumbers.parse(flat.owners_phonenumber, "RU")
-            if phonenumbers.is_valid_number_for_region(parsed_phone, "RU"):
-                flat.owner_pure_phone = phonenumbers.format_number(
-                    parsed_phone, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-                flat.save()
+    if not flat_set.exists():
+        return None
+    for flat in flat_set.iterator():
+        parsed_phone = phonenumbers.parse(flat.owners_phonenumber, "RU")
+        if phonenumbers.is_valid_number_for_region(parsed_phone, "RU"):
+            flat.owner_pure_phone = phonenumbers.format_number(
+                parsed_phone, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+            flat.save()
 
 
 def move_backward(apps, schema_editor):

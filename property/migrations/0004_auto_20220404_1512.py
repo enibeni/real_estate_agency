@@ -6,10 +6,11 @@ from django.db import migrations
 def define_new_building(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
     flat_set = Flat.objects.all()
-    if flat_set.exists():
-        for flat in flat_set.iterator():
-            flat.new_building = flat.construction_year >= 2015
-            flat.save()
+    if not flat_set.exists():
+        return None
+    for flat in flat_set.iterator():
+        flat.new_building = flat.construction_year >= 2015
+        flat.save()
 
 
 class Migration(migrations.Migration):
